@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './App.css';
+import Dashboard from './components/Dashboard';
+import Onboarding from './components/Onboarding';
+import { AppProvider } from './context/AppContext';
 
 function App() {
+  const [isOnboarded, setIsOnboarded] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Perfect Context</h1>
-        <p>Hello World - Consent-first meeting companion prototype</p>
-        <p>Coming soon...</p>
-      </header>
-    </div>
+    <AppProvider>
+      <div className="App">
+        {!isOnboarded ? (
+          <Onboarding onComplete={() => setIsOnboarded(true)} />
+        ) : (
+          <Dashboard />
+        )}
+      </div>
+    </AppProvider>
   );
 }
 
