@@ -1,1 +1,461 @@
-.people-search {\n  max-width: 1200px;\n  margin: 0 auto;\n}\n\n.search-header {\n  margin-bottom: 24px;\n}\n\n.search-header h2 {\n  margin: 0 0 8px 0;\n  color: #1e293b;\n  font-size: 1.8rem;\n}\n\n.search-subtitle {\n  margin: 0;\n  color: #64748b;\n  font-size: 1.1rem;\n}\n\n.search-container {\n  background: white;\n  border-radius: 12px;\n  padding: 24px;\n  margin-bottom: 24px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.search-input-container {\n  position: relative;\n  margin-bottom: 16px;\n}\n\n.search-input {\n  width: 100%;\n  padding: 16px 20px;\n  border: 2px solid #e2e8f0;\n  border-radius: 8px;\n  font-size: 1rem;\n  transition: border-color 0.3s ease;\n}\n\n.search-input:focus {\n  outline: none;\n  border-color: #667eea;\n}\n\n.clear-search {\n  position: absolute;\n  right: 12px;\n  top: 50%;\n  transform: translateY(-50%);\n  background: #94a3b8;\n  color: white;\n  border: none;\n  border-radius: 50%;\n  width: 24px;\n  height: 24px;\n  cursor: pointer;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 0.8rem;\n}\n\n.search-examples {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 8px;\n  align-items: center;\n}\n\n.examples-label {\n  color: #64748b;\n  font-size: 0.9rem;\n  margin-right: 8px;\n}\n\n.example-chip {\n  background: #f8fafc;\n  border: 1px solid #e2e8f0;\n  border-radius: 16px;\n  padding: 6px 12px;\n  font-size: 0.8rem;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  color: #64748b;\n}\n\n.example-chip:hover {\n  background: #ede9fe;\n  border-color: #7c3aed;\n  color: #5b21b6;\n}\n\n.search-results {\n  display: grid;\n  grid-template-columns: 1fr 400px;\n  gap: 24px;\n}\n\n.results-list {\n  background: white;\n  border-radius: 12px;\n  padding: 24px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.results-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 20px;\n}\n\n.results-header h3 {\n  margin: 0;\n  color: #1e293b;\n}\n\n.confidence-badge {\n  padding: 4px 8px;\n  border-radius: 12px;\n  font-size: 0.8rem;\n  font-weight: 500;\n}\n\n.confidence-badge.high {\n  background: #dcfce7;\n  color: #166534;\n}\n\n.people-grid {\n  display: grid;\n  gap: 16px;\n  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));\n}\n\n.person-card {\n  border: 2px solid #e2e8f0;\n  border-radius: 8px;\n  padding: 16px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n}\n\n.person-card:hover {\n  border-color: #cbd5e1;\n  transform: translateY(-2px);\n  box-shadow: 0 4px 12px rgba(0,0,0,0.1);\n}\n\n.person-card.selected {\n  border-color: #667eea;\n  background: #f8fafc;\n}\n\n.person-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n}\n\n.person-avatar {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white;\n  font-weight: bold;\n  font-size: 0.9rem;\n}\n\n.person-basic-info {\n  flex: 1;\n}\n\n.person-basic-info h4 {\n  margin: 0 0 4px 0;\n  color: #1e293b;\n  font-size: 1rem;\n}\n\n.person-basic-info p {\n  margin: 0;\n  color: #64748b;\n  font-size: 0.9rem;\n}\n\n.meeting-count {\n  background: #ede9fe;\n  color: #5b21b6;\n  padding: 4px 8px;\n  border-radius: 12px;\n  font-size: 0.8rem;\n  font-weight: 500;\n}\n\n.person-vibes {\n  margin-bottom: 12px;\n  font-size: 0.9rem;\n  color: #64748b;\n  line-height: 1.4;\n}\n\n.person-tags {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-bottom: 12px;\n}\n\n.tag {\n  background: #ede9fe;\n  color: #5b21b6;\n  padding: 4px 8px;\n  border-radius: 12px;\n  font-size: 0.8rem;\n  font-weight: 500;\n}\n\n.last-meeting {\n  font-size: 0.8rem;\n  color: #94a3b8;\n}\n\n.person-details {\n  background: white;\n  border-radius: 12px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n  position: sticky;\n  top: 100px;\n  max-height: calc(100vh - 120px);\n  overflow-y: auto;\n}\n\n.details-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  padding: 20px 24px;\n  border-bottom: 1px solid #e2e8f0;\n  background: #f8fafc;\n  border-radius: 12px 12px 0 0;\n}\n\n.details-header h3 {\n  margin: 0;\n  color: #1e293b;\n}\n\n.close-details {\n  background: none;\n  border: none;\n  font-size: 1.2rem;\n  cursor: pointer;\n  color: #64748b;\n  padding: 5px;\n}\n\n.details-content {\n  padding: 24px;\n}\n\n.detail-section {\n  margin-bottom: 24px;\n}\n\n.detail-section h4 {\n  margin: 0 0 12px 0;\n  color: #1e293b;\n  font-size: 1rem;\n  font-weight: 600;\n}\n\n.info-grid {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.info-item {\n  display: flex;\n  justify-content: space-between;\n  padding: 8px 0;\n  border-bottom: 1px solid #f1f5f9;\n}\n\n.info-item:last-child {\n  border-bottom: none;\n}\n\n.info-label {\n  color: #64748b;\n  font-weight: 500;\n}\n\n.meeting-stats {\n  display: flex;\n  gap: 20px;\n}\n\n.stat {\n  text-align: center;\n  padding: 16px;\n  background: #f8fafc;\n  border-radius: 8px;\n  flex: 1;\n}\n\n.stat-number {\n  display: block;\n  font-size: 1.5rem;\n  font-weight: bold;\n  color: #1e293b;\n  margin-bottom: 4px;\n}\n\n.stat-label {\n  font-size: 0.8rem;\n  color: #64748b;\n}\n\n.notes-list {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.note-item {\n  padding: 8px 0;\n  color: #64748b;\n  line-height: 1.4;\n  border-bottom: 1px solid #f1f5f9;\n}\n\n.note-item:last-child {\n  border-bottom: none;\n}\n\n.vibes-description {\n  background: #f0f9ff;\n  border: 1px solid #0ea5e9;\n  border-radius: 8px;\n  padding: 16px;\n  color: #0c4a6e;\n  line-height: 1.4;\n}\n\n.detail-actions {\n  display: flex;\n  flex-direction: column;\n  gap: 8px;\n}\n\n.action-btn {\n  padding: 10px 16px;\n  border: none;\n  border-radius: 6px;\n  cursor: pointer;\n  font-weight: 500;\n  transition: background 0.3s ease;\n}\n\n.action-btn.primary {\n  background: #667eea;\n  color: white;\n}\n\n.action-btn.primary:hover {\n  background: #5a67d8;\n}\n\n.action-btn.secondary {\n  background: #f8fafc;\n  color: #64748b;\n  border: 1px solid #e2e8f0;\n}\n\n.action-btn.secondary:hover {\n  background: #e2e8f0;\n}\n\n.no-results {\n  background: white;\n  border-radius: 12px;\n  padding: 40px;\n  text-align: center;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.no-results-content h3 {\n  margin: 0 0 12px 0;\n  color: #1e293b;\n}\n\n.no-results-content p {\n  margin: 0 0 24px 0;\n  color: #64748b;\n}\n\n.search-tips {\n  background: #f8fafc;\n  border-radius: 8px;\n  padding: 20px;\n  text-align: left;\n  max-width: 400px;\n  margin: 0 auto;\n}\n\n.search-tips h4 {\n  margin: 0 0 12px 0;\n  color: #1e293b;\n}\n\n.search-tips ul {\n  margin: 0;\n  padding-left: 20px;\n}\n\n.search-tips li {\n  margin-bottom: 6px;\n  color: #64748b;\n}\n\n@media (max-width: 1024px) {\n  .search-results {\n    grid-template-columns: 1fr;\n  }\n  \n  .person-details {\n    position: static;\n    max-height: none;\n  }\n}\n\n@media (max-width: 768px) {\n  .people-grid {\n    grid-template-columns: 1fr;\n  }\n  \n  .search-examples {\n    flex-direction: column;\n    align-items: flex-start;\n    gap: 8px;\n  }\n  \n  .meeting-stats {\n    flex-direction: column;\n    gap: 12px;\n  }\n  \n  .detail-actions {\n    grid-template-columns: 1fr;\n  }\n}"
+.people-search {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-header {
+  margin-bottom: 24px;
+}
+
+.search-header h2 {
+  margin: 0 0 8px 0;
+  color: #1e293b;
+  font-size: 1.8rem;
+}
+
+.search-subtitle {
+  margin: 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.search-container {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.search-input-container {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.clear-search {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #94a3b8;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+}
+
+.search-examples {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.examples-label {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-right: 8px;
+}
+
+.example-chip {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #64748b;
+}
+
+.example-chip:hover {
+  background: #ede9fe;
+  border-color: #7c3aed;
+  color: #5b21b6;
+}
+
+.search-results {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 24px;
+}
+
+.results-list {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.results-header h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.confidence-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.confidence-badge.high {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.people-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.person-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.person-card:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.person-card.selected {
+  border-color: #667eea;
+  background: #f8fafc;
+}
+
+.person-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.person-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.person-basic-info {
+  flex: 1;
+}
+
+.person-basic-info h4 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.person-basic-info p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.meeting-count {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.person-vibes {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.person-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.last-meeting {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.person-details {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 100px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+  border-radius: 12px 12px 0 0;
+}
+
+.details-header h3 {
+  margin: 0;
+  color: #1e293b;
+}
+
+.close-details {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #64748b;
+  padding: 5px;
+}
+
+.details-content {
+  padding: 24px;
+}
+
+.detail-section {
+  margin-bottom: 24px;
+}
+
+.detail-section h4 {
+  margin: 0 0 12px 0;
+  color: #1e293b;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.info-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.meeting-stats {
+  display: flex;
+  gap: 20px;
+}
+
+.stat {
+  text-align: center;
+  padding: 16px;
+  background: #f8fafc;
+  border-radius: 8px;
+  flex: 1;
+}
+
+.stat-number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1e293b;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.notes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.note-item {
+  padding: 8px 0;
+  color: #64748b;
+  line-height: 1.4;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.note-item:last-child {
+  border-bottom: none;
+}
+
+.vibes-description {
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  padding: 16px;
+  color: #0c4a6e;
+  line-height: 1.4;
+}
+
+.detail-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.action-btn {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s ease;
+}
+
+.action-btn.primary {
+  background: #667eea;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #5a67d8;
+}
+
+.action-btn.secondary {
+  background: #f8fafc;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.action-btn.secondary:hover {
+  background: #e2e8f0;
+}
+
+.no-results {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.no-results-content h3 {
+  margin: 0 0 12px 0;
+  color: #1e293b;
+}
+
+.no-results-content p {
+  margin: 0 0 24px 0;
+  color: #64748b;
+}
+
+.search-tips {
+  background: #f8fafc;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.search-tips h4 {
+  margin: 0 0 12px 0;
+  color: #1e293b;
+}
+
+.search-tips ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.search-tips li {
+  margin-bottom: 6px;
+  color: #64748b;
+}
+
+@media (max-width: 1024px) {
+  .search-results {
+    grid-template-columns: 1fr;
+  }
+
+  .person-details {
+    position: static;
+    max-height: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .people-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .search-examples {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .meeting-stats {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .detail-actions {
+    grid-template-columns: 1fr;
+  }
+}

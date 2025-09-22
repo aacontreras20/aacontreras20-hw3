@@ -1,1 +1,257 @@
-import React, { useState, useMemo } from 'react';\nimport { useAppContext } from '../context/AppContext';\nimport './PeopleSearch.css';\n\nconst PeopleSearch: React.FC = () => {\n  const { state, dispatch } = useAppContext();\n  const [searchQuery, setSearchQuery] = useState('');\n  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);\n\n  const searchExamples = [\n    'the VC into climate who likes climbing',\n    'gen AI music person',\n    'Harvard PhD studying bias',\n    'founder working on latency',\n    'researcher interested in ethics'\n  ];\n\n  const filteredPeople = useMemo(() => {\n    if (!searchQuery.trim()) return state.people;\n    \n    const query = searchQuery.toLowerCase();\n    return state.people.filter(person => {\n      return (\n        person.name.toLowerCase().includes(query) ||\n        person.company?.toLowerCase().includes(query) ||\n        person.role?.toLowerCase().includes(query) ||\n        person.vibes.toLowerCase().includes(query) ||\n        person.tags.some(tag => tag.toLowerCase().includes(query)) ||\n        person.notes.some(note => note.toLowerCase().includes(query))\n      );\n    });\n  }, [searchQuery, state.people]);\n\n  const handleExampleClick = (example: string) => {\n    setSearchQuery(example);\n  };\n\n  const getPersonMeetings = (personId: string) => {\n    return state.meetings.filter(meeting => \n      meeting.attendees.includes(personId)\n    );\n  };\n\n  const selectedPersonData = selectedPerson \n    ? state.people.find(p => p.id === selectedPerson)\n    : null;\n\n  return (\n    <div className=\"people-search\">\n      <div className=\"search-header\">\n        <h2>🔍 People Search</h2>\n        <p className=\"search-subtitle\">\n          Find people using \"vibes\" - natural language descriptions of who you're looking for\n        </p>\n      </div>\n\n      <div className=\"search-container\">\n        <div className=\"search-input-container\">\n          <input\n            type=\"text\"\n            className=\"search-input\"\n            placeholder=\"Try: 'the VC into climate who likes climbing' or 'gen AI music person'\"\n            value={searchQuery}\n            onChange={(e) => setSearchQuery(e.target.value)}\n          />\n          {searchQuery && (\n            <button \n              className=\"clear-search\"\n              onClick={() => setSearchQuery('')}\n            >\n              ✕\n            </button>\n          )}\n        </div>\n\n        <div className=\"search-examples\">\n          <span className=\"examples-label\">Try these examples:</span>\n          {searchExamples.map((example, index) => (\n            <button\n              key={index}\n              className=\"example-chip\"\n              onClick={() => handleExampleClick(example)}\n            >\n              {example}\n            </button>\n          ))}\n        </div>\n      </div>\n\n      <div className=\"search-results\">\n        <div className=\"results-list\">\n          <div className=\"results-header\">\n            <h3>\n              {searchQuery \n                ? `Found ${filteredPeople.length} ${filteredPeople.length === 1 ? 'person' : 'people'}`\n                : `All People (${state.people.length})`\n              }\n            </h3>\n            {searchQuery && (\n              <div className=\"search-confidence\">\n                <span className=\"confidence-badge high\">\n                  {filteredPeople.length > 0 ? '✓ High confidence' : '⚠️ No matches'}\n                </span>\n              </div>\n            )}\n          </div>\n\n          <div className=\"people-grid\">\n            {filteredPeople.map(person => (\n              <div \n                key={person.id} \n                className={`person-card ${selectedPerson === person.id ? 'selected' : ''}`}\n                onClick={() => setSelectedPerson(person.id)}\n              >\n                <div className=\"person-header\">\n                  <div className=\"person-avatar\">\n                    {person.name.split(' ').map(n => n[0]).join('')}\n                  </div>\n                  <div className=\"person-basic-info\">\n                    <h4>{person.name}</h4>\n                    <p>{person.company} • {person.role}</p>\n                  </div>\n                  <div className=\"meeting-count\">\n                    {person.meetingCount} meetings\n                  </div>\n                </div>\n                \n                <div className=\"person-vibes\">\n                  <strong>Vibes:</strong> {person.vibes}\n                </div>\n                \n                <div className=\"person-tags\">\n                  {person.tags.map(tag => (\n                    <span key={tag} className=\"tag\">{tag}</span>\n                  ))}\n                </div>\n                \n                <div className=\"last-meeting\">\n                  Last met: {person.lastMeeting?.toLocaleDateString() || 'Never'}\n                </div>\n              </div>\n            ))}\n          </div>\n        </div>\n\n        {selectedPersonData && (\n          <div className=\"person-details\">\n            <div className=\"details-header\">\n              <h3>📋 {selectedPersonData.name}</h3>\n              <button \n                className=\"close-details\"\n                onClick={() => setSelectedPerson(null)}\n              >\n                ✕\n              </button>\n            </div>\n            \n            <div className=\"details-content\">\n              <div className=\"detail-section\">\n                <h4>Basic Info</h4>\n                <div className=\"info-grid\">\n                  <div className=\"info-item\">\n                    <span className=\"info-label\">Company:</span>\n                    <span>{selectedPersonData.company}</span>\n                  </div>\n                  <div className=\"info-item\">\n                    <span className=\"info-label\">Role:</span>\n                    <span>{selectedPersonData.role}</span>\n                  </div>\n                  <div className=\"info-item\">\n                    <span className=\"info-label\">Email:</span>\n                    <span>{selectedPersonData.email}</span>\n                  </div>\n                </div>\n              </div>\n\n              <div className=\"detail-section\">\n                <h4>Meeting History</h4>\n                <div className=\"meeting-stats\">\n                  <div className=\"stat\">\n                    <span className=\"stat-number\">{selectedPersonData.meetingCount}</span>\n                    <span className=\"stat-label\">Total Meetings</span>\n                  </div>\n                  <div className=\"stat\">\n                    <span className=\"stat-number\">\n                      {selectedPersonData.lastMeeting \n                        ? Math.floor((new Date().getTime() - selectedPersonData.lastMeeting.getTime()) / (1000 * 60 * 60 * 24))\n                        : 'N/A'\n                      }\n                    </span>\n                    <span className=\"stat-label\">Days Since Last Meeting</span>\n                  </div>\n                </div>\n              </div>\n\n              <div className=\"detail-section\">\n                <h4>Notes & Context</h4>\n                <div className=\"notes-list\">\n                  {selectedPersonData.notes.map((note, index) => (\n                    <div key={index} className=\"note-item\">\n                      • {note}\n                    </div>\n                  ))}\n                </div>\n              </div>\n\n              <div className=\"detail-section\">\n                <h4>Vibes & Personality</h4>\n                <div className=\"vibes-description\">\n                  {selectedPersonData.vibes}\n                </div>\n              </div>\n\n              <div className=\"detail-actions\">\n                <button \n                  className=\"action-btn primary\"\n                  onClick={() => alert('Email integration not implemented - would open email to ' + selectedPersonData.email)}\n                >\n                  📧 Send Email\n                </button>\n                <button \n                  className=\"action-btn secondary\"\n                  onClick={() => alert('Calendar integration not implemented - would schedule meeting')}\n                >\n                  📅 Schedule Meeting\n                </button>\n                <button className=\"action-btn secondary\">\n                  📝 Add Note\n                </button>\n              </div>\n            </div>\n          </div>\n        )}\n      </div>\n\n      {searchQuery && filteredPeople.length === 0 && (\n        <div className=\"no-results\">\n          <div className=\"no-results-content\">\n            <h3>🤔 No matches found</h3>\n            <p>Try a different search term or browse all people above.</p>\n            <div className=\"search-tips\">\n              <h4>Search tips:</h4>\n              <ul>\n                <li>Use natural language: \"the person who...\"</li>\n                <li>Try company names, roles, or interests</li>\n                <li>Search by personality traits or \"vibes\"</li>\n                <li>Use tags like \"AI\", \"founder\", \"research\"</li>\n              </ul>\n            </div>\n          </div>\n        </div>\n      )}\n    </div>\n  );\n};\n\nexport default PeopleSearch;"
+import React, { useState, useMemo } from 'react';
+import { useAppContext } from '../context/AppContext';
+import './PeopleSearch.css';
+
+const PeopleSearch: React.FC = () => {
+  const { state, dispatch } = useAppContext();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedPerson, setSelectedPerson] = useState<string | null>(null);
+
+  const searchExamples = [
+    'the VC into climate who likes climbing',
+    'gen AI music person',
+    'Harvard PhD studying bias',
+    'founder working on latency',
+    'researcher interested in ethics'
+  ];
+
+  const filteredPeople = useMemo(() => {
+    if (!searchQuery.trim()) return state.people;
+
+    const query = searchQuery.toLowerCase();
+    return state.people.filter(person => {
+      return (
+        person.name.toLowerCase().includes(query) ||
+        person.company?.toLowerCase().includes(query) ||
+        person.role?.toLowerCase().includes(query) ||
+        person.vibes.toLowerCase().includes(query) ||
+        person.tags.some(tag => tag.toLowerCase().includes(query)) ||
+        person.notes.some(note => note.toLowerCase().includes(query))
+      );
+    });
+  }, [searchQuery, state.people]);
+
+  const handleExampleClick = (example: string) => {
+    setSearchQuery(example);
+  };
+
+  const getPersonMeetings = (personId: string) => {
+    return state.meetings.filter(meeting =>
+      meeting.attendees.includes(personId)
+    );
+  };
+
+  const selectedPersonData = selectedPerson
+    ? state.people.find(p => p.id === selectedPerson)
+    : null;
+
+  return (
+    <div className="people-search">
+      <div className="search-header">
+        <h2>🔍 People Search</h2>
+        <p className="search-subtitle">
+          Find people using "vibes" - natural language descriptions of who you're looking for
+        </p>
+      </div>
+
+      <div className="search-container">
+        <div className="search-input-container">
+          <input
+            type="text"
+            className="search-input"
+            placeholder="Try: 'the VC into climate who likes climbing' or 'gen AI music person'"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          {searchQuery && (
+            <button
+              className="clear-search"
+              onClick={() => setSearchQuery('')}
+            >
+              ✕
+            </button>
+          )}
+        </div>
+
+        <div className="search-examples">
+          <span className="examples-label">Try these examples:</span>
+          {searchExamples.map((example, index) => (
+            <button
+              key={index}
+              className="example-chip"
+              onClick={() => handleExampleClick(example)}
+            >
+              {example}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="search-results">
+        <div className="results-list">
+          <div className="results-header">
+            <h3>
+              {searchQuery
+                ? `Found ${filteredPeople.length} ${filteredPeople.length === 1 ? 'person' : 'people'}`
+                : `All People (${state.people.length})`
+              }
+            </h3>
+            {searchQuery && (
+              <div className="search-confidence">
+                <span className="confidence-badge high">
+                  {filteredPeople.length > 0 ? '✓ High confidence' : '⚠️ No matches'}
+                </span>
+              </div>
+            )}
+          </div>
+
+          <div className="people-grid">
+            {filteredPeople.map(person => (
+              <div
+                key={person.id}
+                className={`person-card ${selectedPerson === person.id ? 'selected' : ''}`}
+                onClick={() => setSelectedPerson(person.id)}
+              >
+                <div className="person-header">
+                  <div className="person-avatar">
+                    {person.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div className="person-basic-info">
+                    <h4>{person.name}</h4>
+                    <p>{person.company} • {person.role}</p>
+                  </div>
+                  <div className="meeting-count">
+                    {person.meetingCount} meetings
+                  </div>
+                </div>
+
+                <div className="person-vibes">
+                  <strong>Vibes:</strong> {person.vibes}
+                </div>
+
+                <div className="person-tags">
+                  {person.tags.map(tag => (
+                    <span key={tag} className="tag">{tag}</span>
+                  ))}
+                </div>
+
+                <div className="last-meeting">
+                  Last met: {person.lastMeeting?.toLocaleDateString() || 'Never'}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {selectedPersonData && (
+          <div className="person-details">
+            <div className="details-header">
+              <h3>📋 {selectedPersonData.name}</h3>
+              <button
+                className="close-details"
+                onClick={() => setSelectedPerson(null)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="details-content">
+              <div className="detail-section">
+                <h4>Basic Info</h4>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <span className="info-label">Company:</span>
+                    <span>{selectedPersonData.company}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Role:</span>
+                    <span>{selectedPersonData.role}</span>
+                  </div>
+                  <div className="info-item">
+                    <span className="info-label">Email:</span>
+                    <span>{selectedPersonData.email}</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detail-section">
+                <h4>Meeting History</h4>
+                <div className="meeting-stats">
+                  <div className="stat">
+                    <span className="stat-number">{selectedPersonData.meetingCount}</span>
+                    <span className="stat-label">Total Meetings</span>
+                  </div>
+                  <div className="stat">
+                    <span className="stat-number">
+                      {selectedPersonData.lastMeeting
+                        ? Math.floor((new Date().getTime() - selectedPersonData.lastMeeting.getTime()) / (1000 * 60 * 60 * 24))
+                        : 'N/A'
+                      }
+                    </span>
+                    <span className="stat-label">Days Since Last Meeting</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="detail-section">
+                <h4>Notes & Context</h4>
+                <div className="notes-list">
+                  {selectedPersonData.notes.map((note, index) => (
+                    <div key={index} className="note-item">
+                      • {note}
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="detail-section">
+                <h4>Vibes & Personality</h4>
+                <div className="vibes-description">
+                  {selectedPersonData.vibes}
+                </div>
+              </div>
+
+              <div className="detail-actions">
+                <button
+                  className="action-btn primary"
+                  onClick={() => alert('Email integration not implemented - would open email to ' + selectedPersonData.email)}
+                >
+                  📧 Send Email
+                </button>
+                <button
+                  className="action-btn secondary"
+                  onClick={() => alert('Calendar integration not implemented - would schedule meeting')}
+                >
+                  📅 Schedule Meeting
+                </button>
+                <button className="action-btn secondary">
+                  📝 Add Note
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {searchQuery && filteredPeople.length === 0 && (
+        <div className="no-results">
+          <div className="no-results-content">
+            <h3>🤔 No matches found</h3>
+            <p>Try a different search term or browse all people above.</p>
+            <div className="search-tips">
+              <h4>Search tips:</h4>
+              <ul>
+                <li>Use natural language: "the person who..."</li>
+                <li>Try company names, roles, or interests</li>
+                <li>Search by personality traits or "vibes"</li>
+                <li>Use tags like "AI", "founder", "research"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default PeopleSearch;

@@ -1,1 +1,166 @@
-import React, { useState } from 'react';\nimport { useAppContext } from '../context/AppContext';\nimport PreMeetingBrief from './PreMeetingBrief';\nimport PeopleSearch from './PeopleSearch';\nimport MeetingHistory from './MeetingHistory';\nimport Settings from './Settings';\nimport './Dashboard.css';\n\ntype ActiveView = 'brief' | 'search' | 'history' | 'settings';\n\nconst Dashboard: React.FC = () => {\n  const { state } = useAppContext();\n  const [activeView, setActiveView] = useState<ActiveView>('brief');\n  const [showZoomPanel, setShowZoomPanel] = useState(false);\n\n  const upcomingMeeting = {\n    title: 'Weekly WICS Leadership Meeting',\n    time: '2:00 PM - 3:00 PM',\n    participants: ['Sarah Kim', 'Madison Chen', '3 others'],\n    inProgress: false\n  };\n\n  const renderMainContent = () => {\n    switch (activeView) {\n      case 'brief':\n        return <PreMeetingBrief meeting={upcomingMeeting} />;\n      case 'search':\n        return <PeopleSearch />;\n      case 'history':\n        return <MeetingHistory />;\n      case 'settings':\n        return <Settings />;\n      default:\n        return <PreMeetingBrief meeting={upcomingMeeting} />;\n    }\n  };\n\n  return (\n    <div className=\"dashboard\">\n      <header className=\"dashboard-header\">\n        <div className=\"header-content\">\n          <div className=\"logo-section\">\n            <h1>Perfect Context</h1>\n            <span className=\"user-name\">Hi Mary! 👋</span>\n          </div>\n          <div className=\"header-actions\">\n            <button \n              className=\"zoom-btn\"\n              onClick={() => setShowZoomPanel(!showZoomPanel)}\n            >\n              📹 Zoom Panel {showZoomPanel ? '(Active)' : ''}\n            </button>\n            <div className=\"consent-status\">\n              <span className=\"status-indicator notes\">📝 Notes Mode</span>\n              {state.consentSettings.transcriptEnabled && (\n                <span className=\"status-indicator transcript\">📄 Transcript On</span>\n              )}\n            </div>\n          </div>\n        </div>\n      </header>\n\n      <div className=\"dashboard-layout\">\n        <nav className=\"sidebar\">\n          <div className=\"nav-items\">\n            <button \n              className={`nav-item ${activeView === 'brief' ? 'active' : ''}`}\n              onClick={() => setActiveView('brief')}\n            >\n              <span className=\"nav-icon\">📋</span>\n              Meeting Brief\n            </button>\n            <button \n              className={`nav-item ${activeView === 'search' ? 'active' : ''}`}\n              onClick={() => setActiveView('search')}\n            >\n              <span className=\"nav-icon\">🔍</span>\n              People Search\n            </button>\n            <button \n              className={`nav-item ${activeView === 'history' ? 'active' : ''}`}\n              onClick={() => setActiveView('history')}\n            >\n              <span className=\"nav-icon\">📅</span>\n              Meeting History\n            </button>\n            <button \n              className={`nav-item ${activeView === 'settings' ? 'active' : ''}`}\n              onClick={() => setActiveView('settings')}\n            >\n              <span className=\"nav-icon\">⚙️</span>\n              Settings\n            </button>\n          </div>\n          \n          <div className=\"sidebar-footer\">\n            <div className=\"quick-stats\">\n              <div className=\"stat\">\n                <span className=\"stat-number\">{state.people.length}</span>\n                <span className=\"stat-label\">People</span>\n              </div>\n              <div className=\"stat\">\n                <span className=\"stat-number\">{state.meetings.length}</span>\n                <span className=\"stat-label\">Meetings</span>\n              </div>\n            </div>\n          </div>\n        </nav>\n\n        <main className=\"main-content\">\n          {renderMainContent()}\n        </main>\n\n        {showZoomPanel && (\n          <div className=\"zoom-panel\">\n            <div className=\"zoom-panel-header\">\n              <h3>In-Meeting Whisper</h3>\n              <button \n                className=\"close-panel\"\n                onClick={() => setShowZoomPanel(false)}\n              >\n                ✕\n              </button>\n            </div>\n            <div className=\"zoom-panel-content\">\n              <div className=\"meeting-context\">\n                <h4>Current Meeting Context</h4>\n                <div className=\"context-item\">\n                  <strong>Participants:</strong> Sarah, Madison, +3 others\n                </div>\n                <div className=\"context-item\">\n                  <strong>Last discussed:</strong> AI music latency (Madison)\n                </div>\n              </div>\n              \n              <div className=\"live-prompts\">\n                <h4>Live Prompts</h4>\n                <div className=\"prompt-item\">\n                  💡 Ask Madison about her latency optimization progress\n                </div>\n                <div className=\"prompt-item\">\n                  🤝 Sarah mentioned bias detection - good collaboration opportunity\n                </div>\n              </div>\n              \n              <div className=\"quick-capture\">\n                <h4>Quick Capture</h4>\n                <textarea \n                  placeholder=\"Capture important moments, action items, or insights...\"\n                  rows={3}\n                />\n                <button className=\"capture-btn\">💾 Save Note</button>\n              </div>\n              \n              <div className=\"integration-note\">\n                <p><strong>Demo Mode:</strong> In a real implementation, this panel would integrate with Zoom to provide real-time suggestions and capture.</p>\n              </div>\n            </div>\n          </div>\n        )}\n      </div>\n    </div>\n  );\n};\n\nexport default Dashboard;"
+import React, { useState } from 'react';
+import { useAppContext } from '../context/AppContext';
+import PreMeetingBrief from './PreMeetingBrief';
+import PeopleSearch from './PeopleSearch';
+import MeetingHistory from './MeetingHistory';
+import Settings from './Settings';
+import './Dashboard.css';
+
+type ActiveView = 'brief' | 'search' | 'history' | 'settings';
+
+const Dashboard: React.FC = () => {
+  const { state } = useAppContext();
+  const [activeView, setActiveView] = useState<ActiveView>('brief');
+  const [showZoomPanel, setShowZoomPanel] = useState(false);
+
+  const upcomingMeeting = {
+    title: 'Weekly WICS Leadership Meeting',
+    time: '2:00 PM - 3:00 PM',
+    participants: ['Sarah Kim', 'Madison Chen', '3 others'],
+    inProgress: false
+  };
+
+  const renderMainContent = () => {
+    switch (activeView) {
+      case 'brief':
+        return <PreMeetingBrief meeting={upcomingMeeting} />;
+      case 'search':
+        return <PeopleSearch />;
+      case 'history':
+        return <MeetingHistory />;
+      case 'settings':
+        return <Settings />;
+      default:
+        return <PreMeetingBrief meeting={upcomingMeeting} />;
+    }
+  };
+
+  return (
+    <div className="dashboard">
+      <header className="dashboard-header">
+        <div className="header-content">
+          <div className="logo-section">
+            <h1>Perfect Context</h1>
+            <span className="user-name">Hi Mary! 👋</span>
+          </div>
+          <div className="header-actions">
+            <button
+              className="zoom-btn"
+              onClick={() => setShowZoomPanel(!showZoomPanel)}
+            >
+              📹 Zoom Panel {showZoomPanel ? '(Active)' : ''}
+            </button>
+            <div className="consent-status">
+              <span className="status-indicator notes">📝 Notes Mode</span>
+              {state.consentSettings.transcriptEnabled && (
+                <span className="status-indicator transcript">📄 Transcript On</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="dashboard-layout">
+        <nav className="sidebar">
+          <div className="nav-items">
+            <button
+              className={`nav-item ${activeView === 'brief' ? 'active' : ''}`}
+              onClick={() => setActiveView('brief')}
+            >
+              <span className="nav-icon">📋</span>
+              Meeting Brief
+            </button>
+            <button
+              className={`nav-item ${activeView === 'search' ? 'active' : ''}`}
+              onClick={() => setActiveView('search')}
+            >
+              <span className="nav-icon">🔍</span>
+              People Search
+            </button>
+            <button
+              className={`nav-item ${activeView === 'history' ? 'active' : ''}`}
+              onClick={() => setActiveView('history')}
+            >
+              <span className="nav-icon">📅</span>
+              Meeting History
+            </button>
+            <button
+              className={`nav-item ${activeView === 'settings' ? 'active' : ''}`}
+              onClick={() => setActiveView('settings')}
+            >
+              <span className="nav-icon">⚙️</span>
+              Settings
+            </button>
+          </div>
+
+          <div className="sidebar-footer">
+            <div className="quick-stats">
+              <div className="stat">
+                <span className="stat-number">{state.people.length}</span>
+                <span className="stat-label">People</span>
+              </div>
+              <div className="stat">
+                <span className="stat-number">{state.meetings.length}</span>
+                <span className="stat-label">Meetings</span>
+              </div>
+            </div>
+          </div>
+        </nav>
+
+        <main className="main-content">
+          {renderMainContent()}
+        </main>
+
+        {showZoomPanel && (
+          <div className="zoom-panel">
+            <div className="zoom-panel-header">
+              <h3>In-Meeting Whisper</h3>
+              <button
+                className="close-panel"
+                onClick={() => setShowZoomPanel(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="zoom-panel-content">
+              <div className="meeting-context">
+                <h4>Current Meeting Context</h4>
+                <div className="context-item">
+                  <strong>Participants:</strong> Sarah, Madison, +3 others
+                </div>
+                <div className="context-item">
+                  <strong>Last discussed:</strong> AI music latency (Madison)
+                </div>
+              </div>
+
+              <div className="live-prompts">
+                <h4>Live Prompts</h4>
+                <div className="prompt-item">
+                  💡 Ask Madison about her latency optimization progress
+                </div>
+                <div className="prompt-item">
+                  🤝 Sarah mentioned bias detection - good collaboration opportunity
+                </div>
+              </div>
+
+              <div className="quick-capture">
+                <h4>Quick Capture</h4>
+                <textarea
+                  placeholder="Capture important moments, action items, or insights..."
+                  rows={3}
+                />
+                <button className="capture-btn">💾 Save Note</button>
+              </div>
+
+              <div className="integration-note">
+                <p><strong>Demo Mode:</strong> In a real implementation, this panel would integrate with Zoom to provide real-time suggestions and capture.</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default Dashboard;

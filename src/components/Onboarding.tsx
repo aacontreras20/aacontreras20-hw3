@@ -1,1 +1,246 @@
-import React, { useState } from 'react';\nimport { useAppContext } from '../context/AppContext';\nimport './Onboarding.css';\n\ninterface OnboardingProps {\n  onComplete: () => void;\n}\n\nconst Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {\n  const { state, dispatch } = useAppContext();\n  const [currentStep, setCurrentStep] = useState(0);\n  const [showConsentDetails, setShowConsentDetails] = useState(false);\n\n  const steps = [\n    'Welcome',\n    'Connect Services',\n    'Consent Settings',\n    'Complete'\n  ];\n\n  const handleConsentChange = (setting: keyof typeof state.consentSettings, value: boolean) => {\n    dispatch({\n      type: 'UPDATE_CONSENT_SETTINGS',\n      payload: { [setting]: value }\n    });\n  };\n\n  const nextStep = () => {\n    if (currentStep < steps.length - 1) {\n      setCurrentStep(currentStep + 1);\n    } else {\n      onComplete();\n    }\n  };\n\n  const renderStep = () => {\n    switch (currentStep) {\n      case 0:\n        return (\n          <div className=\"welcome-step\">\n            <h1>Welcome to Perfect Context</h1>\n            <p className=\"subtitle\">Your consent-first meeting companion</p>\n            <div className=\"feature-list\">\n              <div className=\"feature-item\">\n                <span className=\"icon\">🤝</span>\n                <div>\n                  <h3>Remember Everyone</h3>\n                  <p>Never forget a name or conversation detail again</p>\n                </div>\n              </div>\n              <div className=\"feature-item\">\n                <span className=\"icon\">🔒</span>\n                <div>\n                  <h3>Privacy First</h3>\n                  <p>Full control over what's captured and shared</p>\n                </div>\n              </div>\n              <div className=\"feature-item\">\n                <span className=\"icon\">⚡</span>\n                <div>\n                  <h3>Instant Context</h3>\n                  <p>Get meeting briefs and follow-up suggestions</p>\n                </div>\n              </div>\n            </div>\n          </div>\n        );\n\n      case 1:\n        return (\n          <div className=\"connect-step\">\n            <h2>Connect Your Services</h2>\n            <p>Connect Zoom and Calendar to get started</p>\n            <div className=\"service-connections\">\n              <div className=\"service-item\">\n                <span className=\"service-icon\">📹</span>\n                <div className=\"service-info\">\n                  <h3>Zoom</h3>\n                  <p>Capture meeting context and participants</p>\n                </div>\n                <button \n                  className=\"connect-btn disabled\"\n                  onClick={() => alert('Zoom integration not implemented yet - using demo data')}\n                >\n                  Connect (Demo)\n                </button>\n              </div>\n              <div className=\"service-item\">\n                <span className=\"service-icon\">📅</span>\n                <div className=\"service-info\">\n                  <h3>Google Calendar</h3>\n                  <p>Sync meeting schedules and participants</p>\n                </div>\n                <button \n                  className=\"connect-btn disabled\"\n                  onClick={() => alert('Calendar integration not implemented yet - using demo data')}\n                >\n                  Connect (Demo)\n                </button>\n              </div>\n            </div>\n            <div className=\"demo-note\">\n              <p><strong>Demo Mode:</strong> This prototype uses synthetic meeting data to demonstrate functionality.</p>\n            </div>\n          </div>\n        );\n\n      case 2:\n        return (\n          <div className=\"consent-step\">\n            <h2>Privacy & Consent Settings</h2>\n            <p>Choose your default privacy level. You can change these anytime.</p>\n            \n            <div className=\"consent-options\">\n              <div className=\"consent-item\">\n                <div className=\"consent-header\">\n                  <label>\n                    <input\n                      type=\"checkbox\"\n                      checked={state.consentSettings.transcriptEnabled}\n                      onChange={(e) => handleConsentChange('transcriptEnabled', e.target.checked)}\n                    />\n                    <span className=\"consent-title\">Meeting Transcripts</span>\n                  </label>\n                  <span className=\"recommended\">Recommended</span>\n                </div>\n                <p className=\"consent-description\">Capture text from meetings when all participants consent</p>\n              </div>\n\n              <div className=\"consent-item\">\n                <div className=\"consent-header\">\n                  <label>\n                    <input\n                      type=\"checkbox\"\n                      checked={state.consentSettings.recordingEnabled}\n                      onChange={(e) => handleConsentChange('recordingEnabled', e.target.checked)}\n                    />\n                    <span className=\"consent-title\">Audio Recording</span>\n                  </label>\n                </div>\n                <p className=\"consent-description\">Record audio for enhanced context (requires explicit consent from all participants)</p>\n              </div>\n\n              <div className=\"consent-item\">\n                <div className=\"consent-header\">\n                  <label>\n                    <input\n                      type=\"checkbox\"\n                      checked={state.consentSettings.faceMemoryEnabled}\n                      onChange={(e) => handleConsentChange('faceMemoryEnabled', e.target.checked)}\n                    />\n                    <span className=\"consent-title\">Face Memory</span>\n                  </label>\n                  <span className=\"beta\">Beta</span>\n                </div>\n                <p className=\"consent-description\">Remember faces to help identify people (stored locally on device)</p>\n              </div>\n            </div>\n\n            <button \n              className=\"learn-more-btn\"\n              onClick={() => setShowConsentDetails(!showConsentDetails)}\n            >\n              {showConsentDetails ? 'Hide' : 'Learn more about'} our privacy practices\n            </button>\n\n            {showConsentDetails && (\n              <div className=\"consent-details\">\n                <h4>Our Privacy Promise</h4>\n                <ul>\n                  <li>All data is encrypted and stored securely</li>\n                  <li>You can export or delete your data anytime</li>\n                  <li>Meeting participants always see consent status</li>\n                  <li>No data is shared without your explicit permission</li>\n                  <li>Face recognition stays on your device only</li>\n                </ul>\n              </div>\n            )}\n          </div>\n        );\n\n      case 3:\n        return (\n          <div className=\"complete-step\">\n            <h2>You're All Set! 🎉</h2>\n            <p>Perfect Context is ready to help you remember everyone you meet.</p>\n            <div className=\"next-steps\">\n              <h3>What's next:</h3>\n              <ul>\n                <li>📋 Get pre-meeting briefs with past conversation context</li>\n                <li>🔍 Search for people using \"vibes\" - like \"the VC who likes climbing\"</li>\n                <li>📝 Review meeting summaries and follow-up suggestions</li>\n                <li>🤝 Build stronger relationships with better context</li>\n              </ul>\n            </div>\n          </div>\n        );\n\n      default:\n        return null;\n    }\n  };\n\n  return (\n    <div className=\"onboarding\">\n      <div className=\"onboarding-container\">\n        <div className=\"progress-bar\">\n          {steps.map((step, index) => (\n            <div \n              key={step}\n              className={`progress-step ${\n                index <= currentStep ? 'active' : ''\n              } ${index === currentStep ? 'current' : ''}`}\n            >\n              <div className=\"step-number\">{index + 1}</div>\n              <div className=\"step-name\">{step}</div>\n            </div>\n          ))}\n        </div>\n\n        <div className=\"step-content\">\n          {renderStep()}\n        </div>\n\n        <div className=\"step-actions\">\n          {currentStep > 0 && (\n            <button \n              className=\"btn-secondary\"\n              onClick={() => setCurrentStep(currentStep - 1)}\n            >\n              Back\n            </button>\n          )}\n          <button \n            className=\"btn-primary\"\n            onClick={nextStep}\n          >\n            {currentStep === steps.length - 1 ? 'Get Started' : 'Continue'}\n          </button>\n        </div>\n      </div>\n    </div>\n  );\n};\n\nexport default Onboarding;"
+import React, { useState } from 'react';
+import { useAppContext } from '../context/AppContext';
+import './Onboarding.css';
+
+interface OnboardingProps {
+  onComplete: () => void;
+}
+
+const Onboarding: React.FC<OnboardingProps> = ({ onComplete }) => {
+  const { state, dispatch } = useAppContext();
+  const [currentStep, setCurrentStep] = useState(0);
+  const [showConsentDetails, setShowConsentDetails] = useState(false);
+
+  const steps = [
+    'Welcome',
+    'Connect Services',
+    'Consent Settings',
+    'Complete'
+  ];
+
+  const handleConsentChange = (setting: keyof typeof state.consentSettings, value: boolean) => {
+    dispatch({
+      type: 'UPDATE_CONSENT_SETTINGS',
+      payload: { [setting]: value }
+    });
+  };
+
+  const nextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      onComplete();
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 0:
+        return (
+          <div className="welcome-step">
+            <h1>Welcome to Perfect Context</h1>
+            <p className="subtitle">Your consent-first meeting companion</p>
+            <div className="feature-list">
+              <div className="feature-item">
+                <span className="icon">🤝</span>
+                <div>
+                  <h3>Remember Everyone</h3>
+                  <p>Never forget a name or conversation detail again</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <span className="icon">🔒</span>
+                <div>
+                  <h3>Privacy First</h3>
+                  <p>Full control over what's captured and shared</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <span className="icon">⚡</span>
+                <div>
+                  <h3>Instant Context</h3>
+                  <p>Get meeting briefs and follow-up suggestions</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+
+      case 1:
+        return (
+          <div className="connect-step">
+            <h2>Connect Your Services</h2>
+            <p>Connect Zoom and Calendar to get started</p>
+            <div className="service-connections">
+              <div className="service-item">
+                <span className="service-icon">📹</span>
+                <div className="service-info">
+                  <h3>Zoom</h3>
+                  <p>Capture meeting context and participants</p>
+                </div>
+                <button
+                  className="connect-btn disabled"
+                  onClick={() => alert('Zoom integration not implemented yet - using demo data')}
+                >
+                  Connect (Demo)
+                </button>
+              </div>
+              <div className="service-item">
+                <span className="service-icon">📅</span>
+                <div className="service-info">
+                  <h3>Google Calendar</h3>
+                  <p>Sync meeting schedules and participants</p>
+                </div>
+                <button
+                  className="connect-btn disabled"
+                  onClick={() => alert('Calendar integration not implemented yet - using demo data')}
+                >
+                  Connect (Demo)
+                </button>
+              </div>
+            </div>
+            <div className="demo-note">
+              <p><strong>Demo Mode:</strong> This prototype uses synthetic meeting data to demonstrate functionality.</p>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="consent-step">
+            <h2>Privacy & Consent Settings</h2>
+            <p>Choose your default privacy level. You can change these anytime.</p>
+
+            <div className="consent-options">
+              <div className="consent-item">
+                <div className="consent-header">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={state.consentSettings.transcriptEnabled}
+                      onChange={(e) => handleConsentChange('transcriptEnabled', e.target.checked)}
+                    />
+                    <span className="consent-title">Meeting Transcripts</span>
+                  </label>
+                  <span className="recommended">Recommended</span>
+                </div>
+                <p className="consent-description">Capture text from meetings when all participants consent</p>
+              </div>
+
+              <div className="consent-item">
+                <div className="consent-header">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={state.consentSettings.recordingEnabled}
+                      onChange={(e) => handleConsentChange('recordingEnabled', e.target.checked)}
+                    />
+                    <span className="consent-title">Audio Recording</span>
+                  </label>
+                </div>
+                <p className="consent-description">Record audio for enhanced context (requires explicit consent from all participants)</p>
+              </div>
+
+              <div className="consent-item">
+                <div className="consent-header">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={state.consentSettings.faceMemoryEnabled}
+                      onChange={(e) => handleConsentChange('faceMemoryEnabled', e.target.checked)}
+                    />
+                    <span className="consent-title">Face Memory</span>
+                  </label>
+                  <span className="beta">Beta</span>
+                </div>
+                <p className="consent-description">Remember faces to help identify people (stored locally on device)</p>
+              </div>
+            </div>
+
+            <button
+              className="learn-more-btn"
+              onClick={() => setShowConsentDetails(!showConsentDetails)}
+            >
+              {showConsentDetails ? 'Hide' : 'Learn more about'} our privacy practices
+            </button>
+
+            {showConsentDetails && (
+              <div className="consent-details">
+                <h4>Our Privacy Promise</h4>
+                <ul>
+                  <li>All data is encrypted and stored securely</li>
+                  <li>You can export or delete your data anytime</li>
+                  <li>Meeting participants always see consent status</li>
+                  <li>No data is shared without your explicit permission</li>
+                  <li>Face recognition stays on your device only</li>
+                </ul>
+              </div>
+            )}
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="complete-step">
+            <h2>You're All Set! 🎉</h2>
+            <p>Perfect Context is ready to help you remember everyone you meet.</p>
+            <div className="next-steps">
+              <h3>What's next:</h3>
+              <ul>
+                <li>📋 Get pre-meeting briefs with past conversation context</li>
+                <li>🔍 Search for people using "vibes" - like "the VC who likes climbing"</li>
+                <li>📝 Review meeting summaries and follow-up suggestions</li>
+                <li>🤝 Build stronger relationships with better context</li>
+              </ul>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="onboarding">
+      <div className="onboarding-container">
+        <div className="progress-bar">
+          {steps.map((step, index) => (
+            <div
+              key={step}
+              className={`progress-step ${
+                index <= currentStep ? 'active' : ''
+              } ${index === currentStep ? 'current' : ''}`}
+            >
+              <div className="step-number">{index + 1}</div>
+              <div className="step-name">{step}</div>
+            </div>
+          ))}
+        </div>
+
+        <div className="step-content">
+          {renderStep()}
+        </div>
+
+        <div className="step-actions">
+          {currentStep > 0 && (
+            <button
+              className="btn-secondary"
+              onClick={() => setCurrentStep(currentStep - 1)}
+            >
+              Back
+            </button>
+          )}
+          <button
+            className="btn-primary"
+            onClick={nextStep}
+          >
+            {currentStep === steps.length - 1 ? 'Get Started' : 'Continue'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Onboarding;

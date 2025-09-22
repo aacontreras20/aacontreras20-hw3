@@ -1,1 +1,283 @@
-import React from 'react';\nimport { useAppContext } from '../context/AppContext';\nimport './Settings.css';\n\nconst Settings: React.FC = () => {\n  const { state, dispatch } = useAppContext();\n\n  const handleConsentChange = (setting: keyof typeof state.consentSettings, value: boolean) => {\n    dispatch({\n      type: 'UPDATE_CONSENT_SETTINGS',\n      payload: { [setting]: value }\n    });\n  };\n\n  const exportData = () => {\n    const data = {\n      people: state.people,\n      meetings: state.meetings,\n      exportDate: new Date().toISOString(),\n      version: '1.0'\n    };\n    \n    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });\n    const url = URL.createObjectURL(blob);\n    const a = document.createElement('a');\n    a.href = url;\n    a.download = 'perfect-context-data.json';\n    a.click();\n    URL.revokeObjectURL(url);\n  };\n\n  return (\n    <div className=\"settings\">\n      <div className=\"settings-header\">\n        <h2>⚙️ Settings</h2>\n        <p className=\"settings-subtitle\">\n          Manage your privacy preferences and account settings\n        </p>\n      </div>\n\n      <div className=\"settings-content\">\n        <section className=\"settings-section\">\n          <h3>🔒 Privacy & Consent</h3>\n          <p className=\"section-description\">\n            Control what data is captured and how it's used. Changes apply to future meetings.\n          </p>\n          \n          <div className=\"settings-options\">\n            <div className=\"setting-item\">\n              <div className=\"setting-header\">\n                <label className=\"setting-label\">\n                  <input\n                    type=\"checkbox\"\n                    checked={state.consentSettings.transcriptEnabled}\n                    onChange={(e) => handleConsentChange('transcriptEnabled', e.target.checked)}\n                  />\n                  <span className=\"setting-title\">Meeting Transcripts</span>\n                </label>\n                <span className=\"setting-status recommended\">Recommended</span>\n              </div>\n              <p className=\"setting-description\">\n                Capture text from meetings when all participants consent. Enables better context and search.\n              </p>\n              <div className=\"setting-details\">\n                <small>📝 Notes-only mode is always available as fallback</small>\n              </div>\n            </div>\n\n            <div className=\"setting-item\">\n              <div className=\"setting-header\">\n                <label className=\"setting-label\">\n                  <input\n                    type=\"checkbox\"\n                    checked={state.consentSettings.recordingEnabled}\n                    onChange={(e) => handleConsentChange('recordingEnabled', e.target.checked)}\n                  />\n                  <span className=\"setting-title\">Audio Recording</span>\n                </label>\n                <span className=\"setting-status caution\">Requires Consent</span>\n              </div>\n              <p className=\"setting-description\">\n                Record audio for enhanced context and accuracy. Requires explicit consent from all participants.\n              </p>\n              <div className=\"setting-details\">\n                <small>🎙️ Audio is processed locally when possible</small>\n              </div>\n            </div>\n\n            <div className=\"setting-item\">\n              <div className=\"setting-header\">\n                <label className=\"setting-label\">\n                  <input\n                    type=\"checkbox\"\n                    checked={state.consentSettings.faceMemoryEnabled}\n                    onChange={(e) => handleConsentChange('faceMemoryEnabled', e.target.checked)}\n                  />\n                  <span className=\"setting-title\">Face Memory</span>\n                </label>\n                <span className=\"setting-status beta\">Beta</span>\n              </div>\n              <p className=\"setting-description\">\n                Remember faces to help identify people in future meetings. Processing happens on your device only.\n              </p>\n              <div className=\"setting-details\">\n                <small>📱 All face data stays on your device and is never shared</small>\n              </div>\n            </div>\n          </div>\n        </section>\n\n        <section className=\"settings-section\">\n          <h3>🔗 Integrations</h3>\n          <p className=\"section-description\">\n            Connect and manage your external services\n          </p>\n          \n          <div className=\"integration-list\">\n            <div className=\"integration-item\">\n              <div className=\"integration-info\">\n                <span className=\"integration-icon\">📹</span>\n                <div className=\"integration-details\">\n                  <h4>Zoom</h4>\n                  <p>Meeting capture and real-time assistance</p>\n                </div>\n              </div>\n              <div className=\"integration-status\">\n                <span className=\"status-badge demo\">Demo Mode</span>\n                <button \n                  className=\"integration-btn\"\n                  onClick={() => alert('Zoom integration not implemented - using demo data')}\n                >\n                  Configure\n                </button>\n              </div>\n            </div>\n\n            <div className=\"integration-item\">\n              <div className=\"integration-info\">\n                <span className=\"integration-icon\">📅</span>\n                <div className=\"integration-details\">\n                  <h4>Google Calendar</h4>\n                  <p>Meeting scheduling and participant sync</p>\n                </div>\n              </div>\n              <div className=\"integration-status\">\n                <span className=\"status-badge demo\">Demo Mode</span>\n                <button \n                  className=\"integration-btn\"\n                  onClick={() => alert('Calendar integration not implemented - using demo data')}\n                >\n                  Configure\n                </button>\n              </div>\n            </div>\n\n            <div className=\"integration-item\">\n              <div className=\"integration-info\">\n                <span className=\"integration-icon\">📧</span>\n                <div className=\"integration-details\">\n                  <h4>Email</h4>\n                  <p>Follow-up automation and contact sync</p>\n                </div>\n              </div>\n              <div className=\"integration-status\">\n                <span className=\"status-badge coming-soon\">Coming Soon</span>\n                <button className=\"integration-btn disabled\" disabled>\n                  Configure\n                </button>\n              </div>\n            </div>\n          </div>\n        </section>\n\n        <section className=\"settings-section\">\n          <h3>💾 Data & Export</h3>\n          <p className=\"section-description\">\n            Manage your data, exports, and retention settings\n          </p>\n          \n          <div className=\"data-options\">\n            <div className=\"data-item\">\n              <div className=\"data-info\">\n                <h4>Data Retention</h4>\n                <p>How long to keep your meeting data</p>\n              </div>\n              <select className=\"retention-select\">\n                <option value=\"3\">3 months</option>\n                <option value=\"6\">6 months</option>\n                <option value=\"12\" selected>12 months (recommended)</option>\n                <option value=\"24\">24 months</option>\n                <option value=\"forever\">Keep forever</option>\n              </select>\n            </div>\n\n            <div className=\"data-item\">\n              <div className=\"data-info\">\n                <h4>Export Data</h4>\n                <p>Download all your Perfect Context data</p>\n              </div>\n              <button className=\"export-btn\" onClick={exportData}>\n                📥 Export All Data (JSON)\n              </button>\n            </div>\n\n            <div className=\"data-item danger\">\n              <div className=\"data-info\">\n                <h4>Delete All Data</h4>\n                <p>Permanently remove all your data from Perfect Context</p>\n              </div>\n              <button \n                className=\"delete-btn\"\n                onClick={() => {\n                  if (window.confirm('Are you sure? This cannot be undone.')) {\n                    alert('Data deletion not implemented in demo');\n                  }\n                }}\n              >\n                🗑️ Delete All Data\n              </button>\n            </div>\n          </div>\n        </section>\n\n        <section className=\"settings-section\">\n          <h3>🔔 Notifications</h3>\n          <p className=\"section-description\">\n            Control when and how you're notified\n          </p>\n          \n          <div className=\"notification-options\">\n            <div className=\"notification-item\">\n              <label className=\"notification-label\">\n                <input type=\"checkbox\" defaultChecked />\n                <span>Pre-meeting briefs (5 minutes before)</span>\n              </label>\n            </div>\n            <div className=\"notification-item\">\n              <label className=\"notification-label\">\n                <input type=\"checkbox\" defaultChecked />\n                <span>Action item reminders</span>\n              </label>\n            </div>\n            <div className=\"notification-item\">\n              <label className=\"notification-label\">\n                <input type=\"checkbox\" defaultChecked />\n                <span>Weekly relationship insights</span>\n              </label>\n            </div>\n            <div className=\"notification-item\">\n              <label className=\"notification-label\">\n                <input type=\"checkbox\" />\n                <span>Email summaries</span>\n              </label>\n            </div>\n          </div>\n        </section>\n\n        <section className=\"settings-section\">\n          <h3>ℹ️ About</h3>\n          <div className=\"about-info\">\n            <div className=\"about-item\">\n              <strong>Version:</strong> 1.0.0 (Prototype)\n            </div>\n            <div className=\"about-item\">\n              <strong>Build:</strong> Demo Mode\n            </div>\n            <div className=\"about-item\">\n              <strong>Privacy Policy:</strong> <a href=\"#\">View Policy</a>\n            </div>\n            <div className=\"about-item\">\n              <strong>Terms of Service:</strong> <a href=\"#\">View Terms</a>\n            </div>\n            <div className=\"about-item\">\n              <strong>Support:</strong> <a href=\"mailto:support@perfct.io\">support@perfct.io</a>\n            </div>\n          </div>\n        </section>\n      </div>\n    </div>\n  );\n};\n\nexport default Settings;"
+import React from 'react';
+import { useAppContext } from '../context/AppContext';
+import './Settings.css';
+
+const Settings: React.FC = () => {
+  const { state, dispatch } = useAppContext();
+
+  const handleConsentChange = (setting: keyof typeof state.consentSettings, value: boolean) => {
+    dispatch({
+      type: 'UPDATE_CONSENT_SETTINGS',
+      payload: { [setting]: value }
+    });
+  };
+
+  const exportData = () => {
+    const data = {
+      people: state.people,
+      meetings: state.meetings,
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'perfect-context-data.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <div className="settings">
+      <div className="settings-header">
+        <h2>⚙️ Settings</h2>
+        <p className="settings-subtitle">
+          Manage your privacy preferences and account settings
+        </p>
+      </div>
+
+      <div className="settings-content">
+        <section className="settings-section">
+          <h3>🔒 Privacy & Consent</h3>
+          <p className="section-description">
+            Control what data is captured and how it's used. Changes apply to future meetings.
+          </p>
+
+          <div className="settings-options">
+            <div className="setting-item">
+              <div className="setting-header">
+                <label className="setting-label">
+                  <input
+                    type="checkbox"
+                    checked={state.consentSettings.transcriptEnabled}
+                    onChange={(e) => handleConsentChange('transcriptEnabled', e.target.checked)}
+                  />
+                  <span className="setting-title">Meeting Transcripts</span>
+                </label>
+                <span className="setting-status recommended">Recommended</span>
+              </div>
+              <p className="setting-description">
+                Capture text from meetings when all participants consent. Enables better context and search.
+              </p>
+              <div className="setting-details">
+                <small>📝 Notes-only mode is always available as fallback</small>
+              </div>
+            </div>
+
+            <div className="setting-item">
+              <div className="setting-header">
+                <label className="setting-label">
+                  <input
+                    type="checkbox"
+                    checked={state.consentSettings.recordingEnabled}
+                    onChange={(e) => handleConsentChange('recordingEnabled', e.target.checked)}
+                  />
+                  <span className="setting-title">Audio Recording</span>
+                </label>
+                <span className="setting-status caution">Requires Consent</span>
+              </div>
+              <p className="setting-description">
+                Record audio for enhanced context and accuracy. Requires explicit consent from all participants.
+              </p>
+              <div className="setting-details">
+                <small>🎙️ Audio is processed locally when possible</small>
+              </div>
+            </div>
+
+            <div className="setting-item">
+              <div className="setting-header">
+                <label className="setting-label">
+                  <input
+                    type="checkbox"
+                    checked={state.consentSettings.faceMemoryEnabled}
+                    onChange={(e) => handleConsentChange('faceMemoryEnabled', e.target.checked)}
+                  />
+                  <span className="setting-title">Face Memory</span>
+                </label>
+                <span className="setting-status beta">Beta</span>
+              </div>
+              <p className="setting-description">
+                Remember faces to help identify people in future meetings. Processing happens on your device only.
+              </p>
+              <div className="setting-details">
+                <small>📱 All face data stays on your device and is never shared</small>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-section">
+          <h3>🔗 Integrations</h3>
+          <p className="section-description">
+            Connect and manage your external services
+          </p>
+
+          <div className="integration-list">
+            <div className="integration-item">
+              <div className="integration-info">
+                <span className="integration-icon">📹</span>
+                <div className="integration-details">
+                  <h4>Zoom</h4>
+                  <p>Meeting capture and real-time assistance</p>
+                </div>
+              </div>
+              <div className="integration-status">
+                <span className="status-badge demo">Demo Mode</span>
+                <button
+                  className="integration-btn"
+                  onClick={() => alert('Zoom integration not implemented - using demo data')}
+                >
+                  Configure
+                </button>
+              </div>
+            </div>
+
+            <div className="integration-item">
+              <div className="integration-info">
+                <span className="integration-icon">📅</span>
+                <div className="integration-details">
+                  <h4>Google Calendar</h4>
+                  <p>Meeting scheduling and participant sync</p>
+                </div>
+              </div>
+              <div className="integration-status">
+                <span className="status-badge demo">Demo Mode</span>
+                <button
+                  className="integration-btn"
+                  onClick={() => alert('Calendar integration not implemented - using demo data')}
+                >
+                  Configure
+                </button>
+              </div>
+            </div>
+
+            <div className="integration-item">
+              <div className="integration-info">
+                <span className="integration-icon">📧</span>
+                <div className="integration-details">
+                  <h4>Email</h4>
+                  <p>Follow-up automation and contact sync</p>
+                </div>
+              </div>
+              <div className="integration-status">
+                <span className="status-badge coming-soon">Coming Soon</span>
+                <button className="integration-btn disabled" disabled>
+                  Configure
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-section">
+          <h3>💾 Data & Export</h3>
+          <p className="section-description">
+            Manage your data, exports, and retention settings
+          </p>
+
+          <div className="data-options">
+            <div className="data-item">
+              <div className="data-info">
+                <h4>Data Retention</h4>
+                <p>How long to keep your meeting data</p>
+              </div>
+              <select className="retention-select">
+                <option value="3">3 months</option>
+                <option value="6">6 months</option>
+                <option value="12" selected>12 months (recommended)</option>
+                <option value="24">24 months</option>
+                <option value="forever">Keep forever</option>
+              </select>
+            </div>
+
+            <div className="data-item">
+              <div className="data-info">
+                <h4>Export Data</h4>
+                <p>Download all your Perfect Context data</p>
+              </div>
+              <button className="export-btn" onClick={exportData}>
+                📥 Export All Data (JSON)
+              </button>
+            </div>
+
+            <div className="data-item danger">
+              <div className="data-info">
+                <h4>Delete All Data</h4>
+                <p>Permanently remove all your data from Perfect Context</p>
+              </div>
+              <button
+                className="delete-btn"
+                onClick={() => {
+                  if (window.confirm('Are you sure? This cannot be undone.')) {
+                    alert('Data deletion not implemented in demo');
+                  }
+                }}
+              >
+                🗑️ Delete All Data
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-section">
+          <h3>🔔 Notifications</h3>
+          <p className="section-description">
+            Control when and how you're notified
+          </p>
+
+          <div className="notification-options">
+            <div className="notification-item">
+              <label className="notification-label">
+                <input type="checkbox" defaultChecked />
+                <span>Pre-meeting briefs (5 minutes before)</span>
+              </label>
+            </div>
+            <div className="notification-item">
+              <label className="notification-label">
+                <input type="checkbox" defaultChecked />
+                <span>Action item reminders</span>
+              </label>
+            </div>
+            <div className="notification-item">
+              <label className="notification-label">
+                <input type="checkbox" defaultChecked />
+                <span>Weekly relationship insights</span>
+              </label>
+            </div>
+            <div className="notification-item">
+              <label className="notification-label">
+                <input type="checkbox" />
+                <span>Email summaries</span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section className="settings-section">
+          <h3>ℹ️ About</h3>
+          <div className="about-info">
+            <div className="about-item">
+              <strong>Version:</strong> 1.0.0 (Prototype)
+            </div>
+            <div className="about-item">
+              <strong>Build:</strong> Demo Mode
+            </div>
+            <div className="about-item">
+              <strong>Privacy Policy:</strong> <a href="#">View Policy</a>
+            </div>
+            <div className="about-item">
+              <strong>Terms of Service:</strong> <a href="#">View Terms</a>
+            </div>
+            <div className="about-item">
+              <strong>Support:</strong> <a href="mailto:support@perfct.io">support@perfct.io</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;

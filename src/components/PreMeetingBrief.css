@@ -1,1 +1,317 @@
-.pre-meeting-brief {\n  max-width: 800px;\n  margin: 0 auto;\n}\n\n.brief-header {\n  background: white;\n  border-radius: 12px;\n  padding: 24px;\n  margin-bottom: 24px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.brief-header h2 {\n  margin: 0 0 20px 0;\n  color: #1e293b;\n  font-size: 1.8rem;\n}\n\n.meeting-info h3 {\n  margin: 0 0 8px 0;\n  color: #1e293b;\n  font-size: 1.3rem;\n}\n\n.meeting-time {\n  margin: 0 0 8px 0;\n  color: #64748b;\n  font-size: 1.1rem;\n}\n\n.meeting-status {\n  margin: 0;\n  font-weight: 600;\n  color: #059669;\n}\n\n.brief-content {\n  display: flex;\n  flex-direction: column;\n  gap: 24px;\n}\n\n.brief-content section {\n  background: white;\n  border-radius: 12px;\n  padding: 24px;\n  box-shadow: 0 2px 8px rgba(0,0,0,0.05);\n}\n\n.brief-content h4 {\n  margin: 0 0 16px 0;\n  color: #1e293b;\n  font-size: 1.1rem;\n  font-weight: 600;\n}\n\n.participants-grid {\n  display: grid;\n  gap: 16px;\n  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));\n}\n\n.participant-card {\n  border: 2px solid #e2e8f0;\n  border-radius: 8px;\n  padding: 16px;\n  transition: border-color 0.3s ease, transform 0.2s ease;\n}\n\n.participant-card:hover {\n  border-color: #cbd5e1;\n  transform: translateY(-2px);\n}\n\n.participant-header {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  margin-bottom: 12px;\n}\n\n.participant-avatar {\n  width: 40px;\n  height: 40px;\n  border-radius: 50%;\n  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: white;\n  font-weight: bold;\n  font-size: 0.9rem;\n}\n\n.participant-info h5 {\n  margin: 0 0 4px 0;\n  color: #1e293b;\n  font-size: 1rem;\n}\n\n.participant-info p {\n  margin: 0;\n  color: #64748b;\n  font-size: 0.9rem;\n}\n\n.participant-vibes {\n  margin-bottom: 12px;\n  font-size: 0.9rem;\n  color: #64748b;\n  line-height: 1.4;\n}\n\n.participant-tags {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 6px;\n  margin-bottom: 12px;\n}\n\n.tag {\n  background: #ede9fe;\n  color: #5b21b6;\n  padding: 4px 8px;\n  border-radius: 12px;\n  font-size: 0.8rem;\n  font-weight: 500;\n}\n\n.last-interaction {\n  font-size: 0.8rem;\n  color: #94a3b8;\n}\n\n.hooks-list {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.hook-item {\n  background: #fef3c7;\n  border: 1px solid #f59e0b;\n  border-radius: 8px;\n  padding: 16px;\n}\n\n.hook-person {\n  font-weight: 600;\n  color: #92400e;\n  margin-bottom: 6px;\n}\n\n.hook-suggestion {\n  color: #92400e;\n  margin-bottom: 6px;\n  font-weight: 500;\n}\n\n.hook-context {\n  font-size: 0.9rem;\n  color: #a16207;\n  font-style: italic;\n}\n\n.loops-list {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.loop-item {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  padding: 12px 16px;\n  border: 1px solid #e2e8f0;\n  border-radius: 8px;\n  transition: border-color 0.3s ease;\n}\n\n.loop-item:hover {\n  border-color: #cbd5e1;\n}\n\n.loop-item.urgent {\n  border-color: #fca5a5;\n  background: #fef2f2;\n}\n\n.loop-text {\n  flex: 1;\n  color: #1e293b;\n  font-weight: 500;\n}\n\n.loop-due {\n  color: #64748b;\n  font-size: 0.9rem;\n  margin-left: 12px;\n}\n\n.urgent-badge {\n  background: #dc2626;\n  color: white;\n  padding: 2px 8px;\n  border-radius: 12px;\n  font-size: 0.7rem;\n  font-weight: 500;\n  margin-left: 8px;\n}\n\n.prep-checklist {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.checkbox-item {\n  display: flex;\n  align-items: center;\n  gap: 10px;\n  cursor: pointer;\n  padding: 8px 0;\n}\n\n.checkbox-item input[type=\"checkbox\"] {\n  width: 16px;\n  height: 16px;\n}\n\n.checkbox-item span {\n  color: #1e293b;\n  font-weight: 500;\n}\n\n.outcomes-list {\n  display: flex;\n  flex-direction: column;\n  gap: 12px;\n}\n\n.outcome-item {\n  display: flex;\n  align-items: center;\n  gap: 12px;\n  padding: 12px 16px;\n  background: #f0f9ff;\n  border: 1px solid #0ea5e9;\n  border-radius: 8px;\n  color: #0c4a6e;\n}\n\n.outcome-icon {\n  font-size: 1.2rem;\n}\n\n.brief-actions {\n  display: flex;\n  gap: 12px;\n  margin-top: 24px;\n}\n\n.start-meeting-btn {\n  flex: 2;\n  padding: 12px 24px;\n  background: #10b981;\n  color: white;\n  border: none;\n  border-radius: 8px;\n  font-weight: 600;\n  font-size: 1rem;\n  cursor: pointer;\n  transition: background 0.3s ease, transform 0.2s ease;\n}\n\n.start-meeting-btn:hover {\n  background: #059669;\n  transform: translateY(-1px);\n}\n\n.save-brief-btn {\n  flex: 1;\n  padding: 12px 24px;\n  background: #667eea;\n  color: white;\n  border: none;\n  border-radius: 8px;\n  font-weight: 600;\n  cursor: pointer;\n  transition: background 0.3s ease;\n}\n\n.save-brief-btn:hover {\n  background: #5a67d8;\n}\n\n@media (max-width: 768px) {\n  .participants-grid {\n    grid-template-columns: 1fr;\n  }\n  \n  .brief-actions {\n    flex-direction: column;\n  }\n  \n  .loop-item {\n    flex-direction: column;\n    align-items: flex-start;\n    gap: 8px;\n  }\n  \n  .loop-due {\n    margin-left: 0;\n  }\n}"
+.pre-meeting-brief {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.brief-header {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.brief-header h2 {
+  margin: 0 0 20px 0;
+  color: #1e293b;
+  font-size: 1.8rem;
+}
+
+.meeting-info h3 {
+  margin: 0 0 8px 0;
+  color: #1e293b;
+  font-size: 1.3rem;
+}
+
+.meeting-time {
+  margin: 0 0 8px 0;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.meeting-status {
+  margin: 0;
+  font-weight: 600;
+  color: #059669;
+}
+
+.brief-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.brief-content section {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.brief-content h4 {
+  margin: 0 0 16px 0;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.participants-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.participant-card {
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  transition: border-color 0.3s ease, transform 0.2s ease;
+}
+
+.participant-card:hover {
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+}
+
+.participant-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.participant-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.participant-info h5 {
+  margin: 0 0 4px 0;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.participant-info p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.participant-vibes {
+  margin-bottom: 12px;
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.participant-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.tag {
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.last-interaction {
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.hooks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hook-item {
+  background: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.hook-person {
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 6px;
+}
+
+.hook-suggestion {
+  color: #92400e;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.hook-context {
+  font-size: 0.9rem;
+  color: #a16207;
+  font-style: italic;
+}
+
+.loops-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loop-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+}
+
+.loop-item:hover {
+  border-color: #cbd5e1;
+}
+
+.loop-item.urgent {
+  border-color: #fca5a5;
+  background: #fef2f2;
+}
+
+.loop-text {
+  flex: 1;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.loop-due {
+  color: #64748b;
+  font-size: 0.9rem;
+  margin-left: 12px;
+}
+
+.urgent-badge {
+  background: #dc2626;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-left: 8px;
+}
+
+.prep-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+}
+
+.checkbox-item span {
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.outcomes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.outcome-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: #f0f9ff;
+  border: 1px solid #0ea5e9;
+  border-radius: 8px;
+  color: #0c4a6e;
+}
+
+.outcome-icon {
+  font-size: 1.2rem;
+}
+
+.brief-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.start-meeting-btn {
+  flex: 2;
+  padding: 12px 24px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.start-meeting-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.save-brief-btn {
+  flex: 1;
+  padding: 12px 24px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.save-brief-btn:hover {
+  background: #5a67d8;
+}
+
+@media (max-width: 768px) {
+  .participants-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brief-actions {
+    flex-direction: column;
+  }
+
+  .loop-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .loop-due {
+    margin-left: 0;
+  }
+}
