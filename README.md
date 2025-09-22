@@ -2,8 +2,8 @@
 
 **Developer:** Aaron Contreras
 **GitHub Username:** aacontreras20
-**Live Demo:** [Deploy to Vercel to get URL]
-**PRD:** [perfct.io PRD](./perfct.io%20PRD%20(1).pdf)
+**Live Demo:** [Vercel Link](https://aacontreras20-hw3-my6xa4fjn-aacontreras20s-projects.vercel.app)
+**PRD:** [perfct.io PRD](https://docs.google.com/document/d/1NEBEHG6nD1d40yFJESZUIPYs2MhXTpv-SNqWSwsMtKw/edit?usp=sharing)
 
 ## Overview
 
